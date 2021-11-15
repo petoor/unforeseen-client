@@ -1,0 +1,55 @@
+cameras:
+- /dev/video0:
+    bitrate: 2048
+    camera_format: video/x-raw
+    framerate: 30
+    height: 360
+    width: 640
+device:
+  MAC_address: 00:bb:60:0a:e7:0e
+  ip: 192.168.0.37
+  mode: development
+  name: device-name
+  root: /home/peter/Desktop/unforeseen/client
+  type: PC
+influxdb:
+  bucket: inset_bucket_name_here
+  ip: 192.168.0._insert_last_numbers
+  org: inset_org_here
+  port: 8086
+  token: inset_token_from_influxdb_here
+input_signal:
+  pin: 12
+  protocol: GPIO
+model:
+  pipeline: null
+  script: null
+notification:
+  email: null
+output_signal:
+  pin: 8
+  protocol: GPIO
+server:
+  port: 8080
+storage:
+  NAS:
+    password: null
+    path: null
+    port: 22
+    protocol: scp
+    url: null
+    use_sync: false
+    user: null
+  cloud:
+    password: null
+    path: null
+    protocol: scp
+    url: null
+    use_sync: false
+    user: null
+  local_storage:
+    delete_space: 20%, 90%
+    delete_time: 5d
+    folders_to_delete:
+    - recordings
+    path: /home/peter/Desktop/unforeseen/client/storage

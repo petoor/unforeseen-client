@@ -1,0 +1,1 @@
+v4l2src device={camera} do-timestamp=true ! {camera_format},format=RGB,width={width}, height={height}, framerate={framerate}/1 ! jpegparse ! jpegdec ! videoconvert ! videorate ! video/x-raw,format=RGB,width={width}, height={height}, framerate={framerate}/1 ! appsink name=appsink emit-signals=true max-buffers=1 drop=true

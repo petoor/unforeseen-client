@@ -1,0 +1,1 @@
+v4l2src num-buffers=1 device={camera} do-timestamp=true ! videoconvert ! videorate ! {camera_format},format=RGB,width={width}, height={height}, framerate={framerate}/1 ! jpegenc ! filesink location={image_location}
