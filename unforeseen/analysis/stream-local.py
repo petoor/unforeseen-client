@@ -14,10 +14,10 @@ from gstreamer import GstPipeline, Gst
 import gstreamer.utils as utils
 
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from unforeseen-client.config import setup_loader
+from unforeseen.config import setup_loader
 import pdb
 # Apply camera settings
-from unforeseen-client.cameras.camera_settings import apply_camera_settings
+from unforeseen.cameras.camera_settings import apply_camera_settings
 
 class GstPipeline:
     def __init__(self, pipeline):

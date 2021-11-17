@@ -1,6 +1,6 @@
 import os, sys
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from unforeseen-client.config import setup_loader
+from unforeseen.config import setup_loader
 
 # This code is inspired heavely from http://4youngpadawans.com/stream-live-video-to-browser-using-gstreamer/
 

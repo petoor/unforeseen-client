@@ -3,10 +3,10 @@ import setuptools
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
-PACKAGES = ['numpy']
+PACKAGES = []
 
 setuptools.setup(
-    name='unforseen-client',
+    name='unforeseen',
     version='0.0.1',
     author='Peter Lunding Jensen',
     author_email='peterlundingj@gmail.com',
@@ -18,6 +18,13 @@ setuptools.setup(
         "Issues": "https://github.com/petoor/unforseen-client/issues"
     },
     license='MIT',
-    packages=['unforseen-client'],
+    packages=setuptools.find_packages(),
+    classifiers=[
+        "Programming Language :: Python :: 3",
+        "License :: OSI Approved :: MIT License",
+        "Operating System :: OS Independent",
+    ],
+
+    python_requires='>=3.6',
     install_requires=PACKAGES
 )

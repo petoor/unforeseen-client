@@ -1,0 +1,4 @@
+wget https://nvidia.box.com/shared/static/ai2sxrp1tg8mk4j0jbrw3vthqjp8x0af.gz -O MonoDepth-FCN-ResNet18.tar.gz # Monodepth
+wget https://nvidia.box.com/shared/static/jcdewxep8vamzm71zajcovza938lygre.gz -O SSD-Mobilenet-v2.tar.gz # Object detection
+wget https://nvidia.box.com/shared/static/gph1qfor89vh498op8cicvwc13zltu3h.gz -O ResNet-18.tar.gz # Classification
+wget https://nvidia.box.com/shared/static/p63pgrr6tm33tn23913gq6qvaiarydaj.gz -O FCN-ResNet18-Pascal-VOC-320x320.tar.gz # Semantic segmentation 320 x 320 res

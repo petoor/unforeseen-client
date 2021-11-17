@@ -2,7 +2,7 @@ import os, sys
 from crontab import CronTab
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from unforeseen-client.config import setup_loader
+from unforeseen.config import setup_loader
 setup = setup_loader()
 
 root = setup.get("device").get("root")
