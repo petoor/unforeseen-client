@@ -11,14 +11,11 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import GLib, Gst, Gtk
 from gstreamer import GstPipeline, Gst
 import gstreamer.utils as utils
-import pdb
 
 # AI Model
 from unforeseen.analysis.models.people_torchvision import PeopleDetect
 #from models.people_jetson import PeopleDetect
 
-
-# sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from unforeseen.config import setup_loader
 
 # Apply camera settings

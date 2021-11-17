@@ -4,7 +4,7 @@ import numpy as np
 from datetime import datetime
 # Gstreamer related
 import gi
-import pdb
+
 gi.require_version('Gst', '1.0')
 gi.require_version('GstBase', '1.0')
 gi.require_version('Gtk', '3.0')
@@ -13,9 +13,8 @@ from gi.repository import GLib, Gst, Gtk
 from gstreamer import GstPipeline, Gst
 import gstreamer.utils as utils
 
-# sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from unforeseen.config import setup_loader
-import pdb
+
 # Apply camera settings
 from unforeseen.cameras.camera_settings import apply_camera_settings
 

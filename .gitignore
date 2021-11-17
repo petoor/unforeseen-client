@@ -11,3 +11,10 @@ venv.bak/
 example_videos/
 storage/
 
+
+# Files
+
+unforeseen/SETUP.yml
+unforeseen/index.html
+unforeseen/cameras/video*
+unforeseen/ModelDescription.md

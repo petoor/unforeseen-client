@@ -8,7 +8,7 @@ import logging
 from influxdb_client import Point, WritePrecision
 from influxdb.influxdb import InfluxDBObject
 from datetime import datetime
-import pdb
+
 try:
     import Jetson.GPIO as GPIO
 except (RuntimeError, ModuleNotFoundError):
