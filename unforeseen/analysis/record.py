@@ -119,6 +119,7 @@ class GstPipeline:
                         buffer=map_info.data)
                 out.write(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
                 gstbuffer.unmap(map_info)
+         
 
 
 if __name__=="__main__":
@@ -154,6 +155,8 @@ if __name__=="__main__":
     framerate = camera_settings.get("framerate")
     bitrate = camera_settings.get("bitrate")
     name = setup.get("device").get("name")
+    udpsink_port = setup.get("server").get("udp_sink")
+    ip = setup.get("device").get("ip")
     record_path = "storage/recordings"
     pipeline_path = args.pipeline_path
 
@@ -166,7 +169,9 @@ if __name__=="__main__":
         pipeline = pipeline.replace("{framerate}", str(framerate))
         pipeline = pipeline.replace("{bitrate}", str(bitrate))
         pipeline = pipeline.replace("{name}", str(name))
-
+        pipeline = pipeline.replace("{udpsink_port}", str(udpsink_port))
+        pipeline = pipeline.replace("{ip}", str(ip))
+        
     Gst.init(None)
     # framerate*900 = 15 minutes
     GstPipeline(pipeline,width=width, height=height, framerate=framerate, buffer_length=framerate*900,record_path=record_path).run()
