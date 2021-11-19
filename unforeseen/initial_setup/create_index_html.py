@@ -6,7 +6,7 @@ from unforeseen.config import setup_loader
 
 setup = setup_loader()
 
-ip_port = f'{setup.get("device").get("ip")}:{str(setup.get("server").get("port"))}'
+hls_sink_port = f'{setup.get("device").get("ip")}:{str(setup.get("server").get("hls_sink_port"))}'
 name = f'{setup.get("device").get("name")}'
 height = str(480)
 width = str(640) 
@@ -20,7 +20,7 @@ html = f'''<!DOCTYPE html>
 </head>
 <body> 
 <video-js id="video" class="vjs-default-skin" controls preload="auto" width="{width}" height="{height}">
-    <source src="http://{ip_port}/storage/streaming/playlist.m3u8" type="application/x-mpegURL">
+    <source src="http://{hls_sink_port}/storage/streaming/playlist.m3u8" type="application/x-mpegURL">
   </video-js>
   <script src="https://unpkg.com/video.js/dist/video.js"></script>
   <script src="https://unpkg.com/@videojs/http-streaming/dist/videojs-http-streaming.js"></script>

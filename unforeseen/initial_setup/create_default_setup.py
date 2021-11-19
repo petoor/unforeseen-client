@@ -77,7 +77,8 @@ except:
    
 
 ### server ###
-server_port = 8080
+hls_sink_port = 8080
+udp_sink_port = 8554
 
 ### InfluxDB ###
 influxdb_port = 8086
@@ -155,7 +156,7 @@ setup.update({"output_signal": {"protocol": output_protocol, "pin": output_pin}}
 setup.update({"input_signal": {"protocol": input_protocol, "pin": input_pin}})
 setup.update({"notification": {"email": None}})
 setup.update({"model": {"script": None, "pipeline": None}})
-setup.update({"server" : {"port": server_port}})
+setup.update({"server" : {"hls_sink_port": hls_sink_port, "udp_sink": udp_sink_port}})
 setup.update({"influxdb": {"port": influxdb_port, "token": token, "org": org, "bucket": bucket, "ip": influx_ip}})
 setup.update({"storage": 
              {"local_storage": {"path": local_storage_path, "folders_to_delete": folders_to_delete, "delete_time": delete_time, "delete_space": delete_space}, 
@@ -171,3 +172,9 @@ with open('SETUP.yml', 'w') as f:
 
 with open('ModelDescription.md', 'w+') as f:
     f.write("# Start of ModelDescription")
+
+with open('rtsp.sdp', 'w+') as f:
+    f.write("v=0 \n")
+    f.write("m=video 8554 RTP/AVP 96 \n")
+    f.write(f"c=IN IP4 {ip} \n")
+    f.write("a=rtpmap:96 H264/90000 \n")

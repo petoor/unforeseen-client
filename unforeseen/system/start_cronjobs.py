@@ -19,8 +19,8 @@ backup.minute.on(0)
 backup.hour.on(0)
 
 # Start http (hls) server if machine goes down
-port = setup.get("server").get("port")
-server = cron.new(command=f'cd {root} && python3 -m http.server {port} > storage/logging/server.log')
+hls_sink_port = setup.get("server").get("hls_sink_port")
+server = cron.new(command=f'cd {root} && python3 -m http.server {hls_sink_port} > storage/logging/server.log')
 server.every_reboot()
 
 # Start analysis

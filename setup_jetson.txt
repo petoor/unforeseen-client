@@ -40,11 +40,19 @@ pip install influxdb-client
 pip install getmac
 
 # stats
-
 sudo -H pip install -U jetson-stats
 
 # Cronjob
 pip install python-crontab
+
+# RTSP Server
+Check version with gst-launch-1.0 --version
+and download corrosponding server version from.
+https://gstreamer.freedesktop.org/src/gst-rtsp-server/
+
+untar and cd to folder
+./configure
+make
 
 # and reboot
 # To run without gui
