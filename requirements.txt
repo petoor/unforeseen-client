@@ -1,11 +1,17 @@
 pyyaml==5.3.1
-influxdb_client==1.21.0
+certifi==2021.10.8
 getmac==0.8.2
-Mock.GPIO==0.1.8
-mediapipe==0.8.8.1
-getmac==0.8.2
-
-pip install git+https://github.com/jackersson/gstreamer-python.git
-
-sudo apt-get install v4l-utils -y
-
+influxdb-client==1.23.0
+Jetson.GPIO==2.0.17
+numpy==1.21.4
+pycairo==1.20.1
+python-crontab==2.6.0
+python-dateutil==2.8.2
+pytz==2021.3
+Rx==3.2.0
+six==1.16.0
+unforeseen==0.0.1
+urllib3==1.26.7
+pycairo==1.20.1
+PyGObject==3.36.0
+git+https://github.com/jackersson/gstreamer-python.git

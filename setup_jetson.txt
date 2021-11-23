@@ -1,14 +1,14 @@
-# Image : https://developer.nvidia.com/jetson-nano-2gb-sd-card-image
+# Image 2GB version: https://developer.nvidia.com/jetson-nano-2gb-sd-card-image
+# Image 4GB version: https://developer.nvidia.com/jetson-nano-sd-card-image
+# To setup with USB see : https://www.youtube.com/watch?v=53rRMr1IpWs
 
-After booting to a USB harddisk (DO NOT USE SD CARD) We can do.
+After booting to a USB harddisk (DO NOT USE SD CARD OR USB FLASH).
 
 # ssh to the jetson.
 sudo apt-get update -y && sudo apt-get upgrade -y
 # Pytorch uses python3.6
-sudo apt install -y apt-utils python3.6 python3-pip 
+sudo apt install -y apt-utils python3.6 python3-pip v4l-utils
 sudo ln -sf /usr/bin/python3 /usr/bin/python && sudo ln -sf /usr/bin/pip3 /usr/bin/pip
-
-sudo apt-get install v4l-utils -y
 
 # Install jetson inference + pytorch
 
@@ -22,28 +22,14 @@ make -j$(nproc)
 sudo make install
 sudo ldconfig
 
-# install gstreamer and dependecies
-sudo apt-get install gstreamer1.0-tools gstreamer1.0-alsa gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly gstreamer1.0-libav -y
-sudo apt-get install libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libgstreamer-plugins-good1.0-dev libgstreamer-plugins-bad1.0-dev -y
-sudo apt install libgirepository1.0-dev gcc libcairo2-dev pkg-config python3-dev gir1.2-gtk-3.0 -y
-pip install pycairo
-pip install PyGObject
-pip install git+https://github.com/jackersson/gstreamer-python.git
+# Install gstreamer and dependecies
+sudo apt-get install gstreamer1.0-tools gstreamer1.0-alsa gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly gstreamer1.0-libav libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libgstreamer-plugins-good1.0-dev libgstreamer-plugins-bad1.0-dev libgirepository1.0-dev gcc libcairo2-dev pkg-config python3-dev gir1.2-gtk-3.0 -y
 
-# install jetson.GPIO
-pip install Jetson.GPIO
-
-# install influxdb client
-pip install influxdb-client
-
-# getmac
-pip install getmac
+# Install pip packages
+pip install -r requirements.txt
 
 # stats
 sudo -H pip install -U jetson-stats
-
-# Cronjob
-pip install python-crontab
 
 # RTSP Server
 Check version with gst-launch-1.0 --version
@@ -55,9 +41,9 @@ untar and cd to folder
 make
 
 # and reboot
-# To run without gui
+# To run without gui (Production)
 sudo systemctl set-default multi-user.target 
-# To add gui back 
+# To add gui back  (Development)
 sudo systemctl set-default graphical.target
 
-sudo reboot
+and reboot after setting GUI options
