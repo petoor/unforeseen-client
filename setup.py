@@ -3,7 +3,6 @@ import setuptools
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
-PACKAGES = []
 
 setuptools.setup(
     name='unforeseen',
@@ -25,6 +24,5 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
 
-    python_requires='>=3.6',
-    install_requires=PACKAGES
+    python_requires='>=3.6'
 )
