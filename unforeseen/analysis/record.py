@@ -21,20 +21,24 @@ from gi.repository import Gtk  # noreorder # noqa
 
 
 class VideoAnalysisPipeline:
-    """[summary]."""
+    """General pipeline for video manipulation.
+
+    Functions as the pipeline for all scenarios, so that the only changes we should
+    do the code to do analysis is change the pipeline, model and setup.yml
+    """
 
     def __init__(
         self, pipeline: str, width: int, height: int, framerate: int, buffer_length: int, record_path: str
     ) -> None:
-        """[summary].
+        """Initializes the relevant constants and functions used in the analysis pipeline.
 
         Args:
-            pipeline (str): [description]
-            width (int): [description]
-            height (int): [description]
-            framerate (int): [description]
-            buffer_length (int): [description]
-            record_path (str): [description]
+            pipeline (str): valid gst-launch-1.0 pipeline.
+            width (int): Video width.
+            height (int): Video height.
+            framerate (int): Video framerate.
+            buffer_length (int): Number of buffers to record. Recorded video in seconds = buffer_length / framerate.
+            record_path (str): Video output path.
         """
         self.running = False
         self.gstsample = None
@@ -62,7 +66,7 @@ class VideoAnalysisPipeline:
         bus.connect("message", self.on_bus_message)
 
     def run(self):
-        """[summary]."""
+        """Starts the pipeline."""
         self.running = True
         worker = threading.Thread(target=self.record_loop)
         worker.daemon = True
@@ -93,14 +97,14 @@ class VideoAnalysisPipeline:
         bus: gi.repository.Gst.Bus,
         message: gi.repository.Gst.Message,
     ) -> bool:
-        """[summary].
+        """Gets an returns bus messages from video pipeline.
 
         Args:
-            bus (gi.repository.Gst.Bus): [description]
-            message (gi.repository.Gst.Message): [description]
+            bus (gi.repository.Gst.Bus): Relevant bus.
+            message (gi.repository.Gst.Message): Bus message.
 
         Returns:
-            bool: [description]
+            bool: True, required.
         """
         t = message.type
 
@@ -116,14 +120,16 @@ class VideoAnalysisPipeline:
         return True
 
     def on_new_sample(self, sink: gi.repository.GstApp.AppSink, preroll: bool) -> Gst.FlowReturn.OK:
-        """[summary].
+        """Gets new sample (frame) from the app sink, if appsink exists in the pipeline.
+
+        see https://gstreamer.freedesktop.org/documentation/app/appsink.html?gi-language=python
 
         Args:
-            sink (gi.repository.GstApp.AppSink): [description]
-            preroll (bool): [description]
+            sink (gi.repository.GstApp.AppSink): the appsink defined by the pipeline
+            preroll (bool): If the appsink should use preroll
 
         Returns:
-            Gst.FlowReturn.OK: [description]
+            Gst.FlowReturn.OK: True
         """
         sample = sink.emit("pull-preroll" if preroll else "pull-sample")
         with self.condition:
@@ -132,10 +138,10 @@ class VideoAnalysisPipeline:
         return Gst.FlowReturn.OK
 
     def record_loop(self) -> None:
-        """[summary].
+        """Inference loop which excecutes the logic defined in the model.
 
         Raises:
-            RuntimeError: [description]
+            RuntimeError: If the buffer is corrupt (bad signal from camera).
         """
         while True:
             if self.frameid % self.buffer_length == 0:
