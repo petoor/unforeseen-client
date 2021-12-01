@@ -50,6 +50,16 @@ Gstreamer will be used as the computer vision pipeline. Run the following to ins
 
 `pip install -r requirements.txt`
 
+Install unforeseen-client as a pip package.
+If you havn't already cloned the client, run:
+`git clone https://github.com/petoor/unforeseen-client/`
+`cd unforeseen-client`
+`pip install -e .`
+We add the -e flag to be in in editable mode.
+That means we can add models and functions to the package without rebuilding.
+However we do need to restart the session to acces the new functions.
+
+
 ### 5) *(Optional)* Stats
 Run the following to install jetson-stats. This can be useful for seeing the health of the device and gives more insight than the preconfigured prometheus metrics.
 `sudo -H pip install -U jetson-stats`
