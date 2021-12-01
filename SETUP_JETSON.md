@@ -80,7 +80,7 @@ The RTSP Server should now be installed and ready for use. See [record and displ
 
 ### 7) Reboot and enjoy.
 `reboot`
-The jetson is now ready to run computer vision models. See the [get started](https://github.com/petoor/unforeseen-client/blob/main/GET_STARTED.MD) to run some pipelines.
+The jetson is now ready to run computer vision models. See the [get started](https://github.com/petoor/unforeseen-client/blob/main/README.md) to run some pipelines.
 
 To run without GUI - Production Mode
 `sudo systemctl set-default multi-user.target`
