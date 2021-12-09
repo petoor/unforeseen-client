@@ -13,7 +13,7 @@ from gstreamer import GstPipeline, Gst
 import gstreamer.utils as utils
 
 # AI Model
-from unforeseen.analysis.models.people_torchvision import PeopleDetect
+#from unforeseen.analysis.models.people_torchvision import PeopleDetect
 #from models.people_jetson import PeopleDetect
 
 from unforeseen.config import setup_loader
