@@ -16,7 +16,8 @@ Once setup and you are at the desktop, go to 2).
 
 ### 2)  Get the Jetson to boot USB (Portable SSD/HDD).
 This is done in order to have the machine being stable. An SD card / USB Flash drive have a limited lifespan due to **write/erase cycles**, this means we can not write logs and continuous data. However there is no such limitation on SSD/HDD drives. 
-To boot from USB see : https://www.youtube.com/watch?v=53rRMr1IpWs
+To boot from USB see : [Boot from USB - youtube](https://www.youtube.com/watch?v=53rRMr1IpWs)
+
 Note: You need to boot to the SD card for the first boot before you can boot to USB.
 
 ---
@@ -99,7 +100,7 @@ To run without GUI - Production Mode
 
 `sudo systemctl set-default multi-user.target`
 
-Not to be confused with headless - see for https://www.youtube.com/watch?v=Ch1NKfER0oM headless 
+Not to be confused with headless - see [Headless setup - youtube](https://www.youtube.com/watch?v=Ch1NKfER0oM)
 To add GUI back  - Development Mode
 
 `sudo systemctl set-default graphical.target`
