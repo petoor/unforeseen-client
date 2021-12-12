@@ -7,7 +7,7 @@ import subprocess
 from subprocess import Popen, PIPE
 from getmac import get_mac_address
 
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# TODO, Running Popen with shell=True is discuraged, refactor to run without.
 
 setup = {}
 
@@ -16,14 +16,23 @@ setup = {}
 # Therefore we filter out all the odd numbered video finds.
 # Name of the device / application.
 
-name = "device-name"
-device_type = "PC" # JETSON, RPI, ARM, or PC. PC is a catch all, normally a x86 running ubuntu.
+device_name = "device-name"
+
+process = Popen(["cat /proc/device-tree/model"], stdout=PIPE, stderr=PIPE, shell=True, text=True)
+stdout, stderr = process.communicate()
+if "nano" in stdout.lower():
+    device_type = "NANO"
+elif "xavier" in stdout.lower():
+    device_type = "XAVIER" # This line is untestet, since i do not have access to an xavier.
+else:
+    device_type = "PC"
+
 device_mode = "development" # development, production, etc..
 
 # Connected cameras
-process = Popen(["ls /dev/video*"], stdout=PIPE, stderr=PIPE, shell=True)
+process = Popen(["ls /dev/video*"], stdout=PIPE, stderr=PIPE, shell=True, text=True)
 stdout, stderr = process.communicate()
-stdout = stdout.decode("utf-8").split("\n")
+stdout = stdout.split("\n")
 cameras = []
 
 for camera in stdout:
@@ -36,9 +45,9 @@ for camera in stdout:
 
 camera_list = []
 for camera in cameras:
-    process = Popen([f"v4l2-ctl --device={camera} --list-formats-ext"], stdout=PIPE, stderr=PIPE, shell=True)
+    process = Popen([f"v4l2-ctl --device={camera} --list-formats-ext"], stdout=PIPE, stderr=PIPE, shell=True, text=True)
     stdout, stderr = process.communicate()
-    stdout = stdout.decode("utf-8").split("\n\t\t")
+    stdout = stdout.split("\n\t\t")
     #TODO: Improve this fps, width and height could be wrong if format is mjpeg
     for idx, line in enumerate(stdout):
         if "MJPG" in line:
@@ -112,9 +121,9 @@ email = None
 # However, if none exists, we use the root dir.
 
 
-process = Popen([f"ls /media/{os.environ.get('USER')}"], stdout=PIPE, stderr=PIPE, shell=True)
+process = Popen([f"ls /media/{os.environ.get('USER')}"], stdout=PIPE, stderr=PIPE, shell=True, text=True)
 stdout, stderr = process.communicate()
-stdout = stdout.decode("utf-8").split("\n")[0]
+stdout = stdout.split("\n")[0]
 
 root_dir = os.getcwd() # The storage folder should be symlinked to USB storage
 local_storage_path = root_dir+"/storage"
@@ -133,7 +142,7 @@ for path in [local_storage_path, streaming, recordings_dir, images_dir, training
 # tell which device the data comes from.
 
 f = open(f"{local_storage_path}/device_info.txt", "w")
-f.write(f"Device name : {name} \n")
+f.write(f"Device name : {device_name} \n")
 f.write(f"MAC address : {mac}")
 f.close()
 
@@ -151,9 +160,9 @@ folders_to_delete = [recordings_dir]
 delete_time = "5d"
 delete_space = "20%, 90%"
 
-setup.update({"device": {"name":f"{name}", "ip":f"{ip}", "MAC_address":f"{mac}", "type":f"{device_type}", "mode":f"{device_mode}","root": root_dir}})
-setup.update({"output_signal": {"protocol": output_protocol, "pin": output_pin}})
-setup.update({"input_signal": {"protocol": input_protocol, "pin": input_pin}})
+setup.update({"device": {"name":f"{device_name}", "ip":f"{ip}", "MAC_address":f"{mac}", "type":f"{device_type}", "mode":f"{device_mode}","root": root_dir}})
+setup.update({"output_signal": {"protocol": output_protocol, "out_pin": output_pin}})
+setup.update({"input_signal": {"protocol": input_protocol, "in_pin": input_pin}})
 setup.update({"notification": {"email": None}})
 setup.update({"model": {"script": None, "pipeline": None}})
 setup.update({"server" : {"hls_sink_port": hls_sink_port, "udp_sink": udp_sink_port}})

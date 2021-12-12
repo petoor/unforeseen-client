@@ -19,33 +19,33 @@ except (RuntimeError, ModuleNotFoundError):
    
 
 class PeopleDetect:
-    def __init__(self, url=None, token=None, bucket=None, org=None, pin=None):
-        self.model = fasterrcnn
+    def __init__(self, url=None, token=None, bucket=None, org=None, db_write_speed=30, out_pin=None):
         self.bucket = bucket
         self.org = org
         self.url = url
         self.token = token
-        self.pin = pin
+        self.db_write_speed = db_write_speed
+        self.out_pin = out_pin
         device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         self.model = fasterrcnn(pretrained=True)
         self.model.eval().to(device)
         
-        if self.pin is not None:
+        if self.out_pin is not None:
             GPIO.setmode(GPIO.BOARD)
-            GPIO.setup(self.pin, GPIO.OUT, initial=GPIO.LOW)
+            GPIO.setup(self.out_pin, GPIO.OUT, initial=GPIO.LOW)
         
         if self.url is None:
             logging.warning("Running without database")
             
-        if self.pin is not None:
-            logging.info(f"GPIO pin is {self.pin}")
+        if self.out_pin is not None:
+            logging.info(f"GPIO pin is {self.out_pin}")
             
         if self.token is not None or url is not None:
             self.influxdb_object = InfluxDBObject(self.token, self.url)
 
     def write_to_db(self, frameid, result):
         try:
-            if frameid % 30 == 0: # We only write to db every second assuming fps = 30
+            if frameid % db_write_speed == 0: # We only write to db every second assuming fps = 30
                 point = Point("prediction").field("person", result).time(datetime.utcnow(), WritePrecision.NS)
                 self.influxdb_object.write_api.write(self.bucket, self.org, point)
         except Exception:
@@ -53,9 +53,9 @@ class PeopleDetect:
     
     def gpio_signal(self, signal=GPIO.HIGH):
         #Sends an output signal with GPIO
-        if self.pin is not None:
-            GPIO.output(self.pin, signal)
-            #logging.info(f"Sent {signal} to {self.pin}")
+        if self.out_pin is not None:
+            GPIO.output(self.out_pin, signal)
+            logging.info(f"Sent {signal} to {self.out_pin}")
 
     def bbox(self, img, preds, org_size, h, w, thresh = 0.5):
         nr_people = 0
@@ -86,7 +86,7 @@ class PeopleDetect:
 
         img, nr_people = self.bbox(frame, preds, org_size=org_size, h=h, w=w, thresh=0.75)
 
-        if self.pin is not None:
+        if self.out_pin is not None:
             if nr_people==0:
                 self.gpio_signal(signal=GPIO.LOW)
             else:

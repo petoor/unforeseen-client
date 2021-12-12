@@ -12,10 +12,6 @@ from gi.repository import GLib, Gst, Gtk
 from gstreamer import GstPipeline, Gst
 import gstreamer.utils as utils
 
-# AI Model
-from unforeseen.analysis.models.people_torchvision import PeopleDetect
-#from models.people_jetson import PeopleDetect
-
 from unforeseen.config import setup_loader
 
 # Apply camera settings
@@ -26,7 +22,7 @@ class GstPipeline:
     https://github.com/google-coral/examples-camera/blob/master/gstreamer/gstreamer.py
     """
 
-    def __init__(self, pipeline, width, height, url=None, token=None, bucket=None, org=None, pin=None, use_model=True):
+    def __init__(self, pipeline, width, height, model=None, url=None, token=None, bucket=None, org=None, in_pin=None, out_pin=None):
         self.running = False
         self.gstsample = None
         self.width = width
@@ -34,9 +30,8 @@ class GstPipeline:
         self.gstfifo = []
         self.frameid = 0
         self.condition = threading.Condition()
-        self.use_model = use_model
-        if self.use_model:
-            self.model = PeopleDetect(url, token, bucket, org, pin)
+        if model is not None:
+            self.model = model
         self.player = Gst.parse_launch(pipeline)
 
         # Fetch different pads from pipeline for manipulation
@@ -117,15 +112,14 @@ class GstPipeline:
                         buffer=map_info.data)
                 frame = frame.copy()
                 # MODEL CODE GOES HERE:
-                if self.use_model:
-                	frame  = self.model.detect(frame, self.frameid)
-
+                if self.model is not None:
+                    frame = self.model.detect(frame=frame, frameid=self.frameid)
                 self.appsrc.emit("push-buffer", utils.ndarray_to_gst_buffer(frame))
                 gstbuffer.unmap(map_info)
 
 if __name__=="__main__":
     Gst.init(None)
-    parser = argparse.ArgumentParser(description='Find people in video!')
+    parser = argparse.ArgumentParser(description='Find people in your video feed!')
     parser.add_argument('--use_db', default=0, choices=['0','1'],
                     help='If we write to an Influx database or not')
                     
@@ -147,13 +141,13 @@ if __name__=="__main__":
     use_model = bool(int(args.use_model))
     
     # Check if pipeline txt is found
-
     pipeline_path = args.pipeline_path
 
     if os.path.isfile(pipeline_path):
         logging.info("Pipeline found")
     else:
         logging.critical("Pipeline file not found")
+        sys.exit()
     
     setup = setup_loader()
     
@@ -174,7 +168,8 @@ if __name__=="__main__":
     width = camera_settings.get("width")
     framerate = camera_settings.get("framerate")
     bitrate = camera_settings.get("bitrate")
-    
+       
+    # Use DB
     if use_db:
         url = setup.get("influxdb").get("ip")+":"+str(setup.get("influxdb").get("port"))
         token = setup.get("influxdb").get("token")
@@ -185,12 +180,27 @@ if __name__=="__main__":
         token = None
         bucket = None
         org = None
-
+    
+    # Use GPIO
     if use_gpio and setup.get("output_signal").get("protocol") == "GPIO":
-        pin = setup.get("output_signal").get("pin")
+        out_pin = setup.get("output_signal").get("out_pin")
     else:
-        pin = None
-
+        out_pin = None
+    
+    if use_gpio and setup.get("input_signal").get("protocol") == "GPIO":
+        in_pin = setup.get("input_signal").get("in_pin")
+    else:
+        in_pin = None
+    
+    # Load AI model.
+    if use_model:
+        if setup.get("device").get("type") == "NANO" or setup.get("device").get("type") == "XAVIER":
+            from unforeseen.analysis.models.people_jetson import PeopleDetect
+        else:
+            from unforeseen.analysis.models.people_torchvision import PeopleDetect
+        model = PeopleDetect(url=url, token=token, bucket=bucket, org=org, db_write_speed=framerate, out_pin=out_pin)
+    else:
+        model=None
     
     with open(pipeline_path, "r") as pipeline:
         pipeline = pipeline.read()
@@ -201,6 +211,6 @@ if __name__=="__main__":
         pipeline = pipeline.replace("{framerate}", str(framerate))
         pipeline = pipeline.replace("{bitrate}", str(bitrate))
         
-    GstPipeline(pipeline, width, height, url, token, bucket, org, pin, use_model).run()
+    GstPipeline(pipeline, width, height, model, url, token, bucket, org, in_pin, out_pin).run()
 
 
