@@ -1,2 +1,2 @@
 v4l2src device={camera} ! {camera_format},format=RGB,width={width}, height={height}, framerate={framerate}/1 ! jpegparse ! jpegdec ! videoconvert ! videorate ! video/x-raw,format=RGB,width={width}, height={height}, framerate={framerate}/1 !tee name=t ! queue ! videoconvert ! video/x-raw,format=RGB,width={width}, height={height}, framerate={framerate}/1 ! appsink name=appsink emit-signals=true max-buffers=1 drop=true 
-t. ! queue ! videoconvert ! clockoverlay ! xvimagesink
+t. ! queue max-size-buffers=1 leaky=downstream ! videoconvert ! clockoverlay ! xvimagesink

@@ -1,2 +1,2 @@
 v4l2src device={camera} do-timestamp=true ! videoconvert ! tee name=t ! queue ! videorate ! {camera_format},format=RGB,width={width}, height={height}, framerate={framerate}/1 ! appsink name=appsink emit-signals=true max-buffers=1 drop=true 
-t. ! queue ! videoconvert ! clockoverlay ! x264enc bitrate={bitrate} tune=zerolatency ! video/x-h264 ! mpegtsmux ! hlssink playlist-location=storage/streaming/playlist.m3u8 location=storage/streaming/segment_%09d.ts target-duration=6 max-files=10
+t. ! queue max-size-buffers=1 leaky=downstream ! videoconvert ! clockoverlay ! x264enc bitrate={bitrate} tune=zerolatency ! video/x-h264 ! mpegtsmux ! hlssink playlist-location=storage/streaming/playlist.m3u8 location=storage/streaming/segment_%09d.ts target-duration=6 max-files=10
