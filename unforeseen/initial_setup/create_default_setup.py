@@ -18,8 +18,9 @@ setup = {}
 
 device_name = "device-name"
 
-process = Popen(["cat /proc/device-tree/model"], stdout=PIPE, stderr=PIPE, shell=True, text=True)
+process = Popen(["cat /proc/device-tree/model"], stdout=PIPE, stderr=PIPE, shell=True)
 stdout, stderr = process.communicate()
+stdout = stdout.decode("utf-8")
 if "nano" in stdout.lower():
     device_type = "NANO"
 elif "xavier" in stdout.lower():
@@ -30,9 +31,9 @@ else:
 device_mode = "development" # development, production, etc..
 
 # Connected cameras
-process = Popen(["ls /dev/video*"], stdout=PIPE, stderr=PIPE, shell=True, text=True)
+process = Popen(["ls /dev/video*"], stdout=PIPE, stderr=PIPE, shell=True)
 stdout, stderr = process.communicate()
-stdout = stdout.split("\n")
+stdout = stdout.decode("utf-8").split("\n")
 cameras = []
 
 for camera in stdout:
@@ -45,9 +46,9 @@ for camera in stdout:
 
 camera_list = []
 for camera in cameras:
-    process = Popen([f"v4l2-ctl --device={camera} --list-formats-ext"], stdout=PIPE, stderr=PIPE, shell=True, text=True)
+    process = Popen([f"v4l2-ctl --device={camera} --list-formats-ext"], stdout=PIPE, stderr=PIPE, shell=True)
     stdout, stderr = process.communicate()
-    stdout = stdout.split("\n\t\t")
+    stdout = stdout.decode("utf-8").split("\n\t\t")
     #TODO: Improve this fps, width and height could be wrong if format is mjpeg
     for idx, line in enumerate(stdout):
         if "MJPG" in line:
@@ -121,9 +122,9 @@ email = None
 # However, if none exists, we use the root dir.
 
 
-process = Popen([f"ls /media/{os.environ.get('USER')}"], stdout=PIPE, stderr=PIPE, shell=True, text=True)
+process = Popen([f"ls /media/{os.environ.get('USER')}"], stdout=PIPE, stderr=PIPE, shell=True)
 stdout, stderr = process.communicate()
-stdout = stdout.split("\n")[0]
+stdout = stdout.decode("utf-8").split("\n")[0]
 
 root_dir = os.getcwd() # The storage folder should be symlinked to USB storage
 local_storage_path = root_dir+"/storage"
