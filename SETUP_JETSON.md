@@ -71,7 +71,7 @@ That means we can add models and functions to the package without rebuilding.
 However we do need to restart the session to acces the new functions.
 
 ### 5) *(Optional)* Stats
-Run the following to install jetson-stats. This can be useful for seeing the health of the device and gives more insight than the preconfigured prometheus metrics.
+Run the following to install jetson-stats. This can be useful for seeing the health of the device.
 
 `sudo -H pip install -U jetson-stats`
 

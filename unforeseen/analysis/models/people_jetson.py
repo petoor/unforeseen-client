@@ -21,7 +21,9 @@ except (RuntimeError, ModuleNotFoundError):
 
 class PeopleDetect:
     def __init__(self, url=None, token=None, bucket=None, org=None, db_write_speed=30, out_pin=None):
-        self.model = jetson.inference.detectNet("ssd-mobilenet-v2", 0.8)
+        self.model = jetson.inference.detectNet("ssd-mobilenet-v2", 0.5)
+        # To call a model trained with the guide : https://github.com/dusty-nv/jetson-inference/blob/master/docs/pytorch-collect-detection.md
+        #self.model = jetson.inference.detectNet(argv=["--model=models/<YOUR MODEL>/ssd-mobilenet.onnx","--labels=models/<YOUR MODEL>/labels.txt","--input-blob=input_0","--output-cvg=scores","--output-bbox=boxes", "--threshold=0.5"])
         self.bucket = bucket
         self.org = org
         self.url = url

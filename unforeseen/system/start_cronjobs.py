@@ -22,11 +22,6 @@ backup = cron.new(command=f"cd {root} && python3 system/scripts/backup_settings.
 backup.minute.on(0)
 backup.hour.on(0)
 
-# Prometheus
-hls_sink_port = setup.get("server").get("hls_sink_port")  # type: ignore
-prometheus = cron.new(command=f"cd {root} && python3 system/scripts/prometheus.py > storage/logging/prometheus.log")
-prometheus.every_reboot()
-
 # Start http (hls) server if machine goes down
 hls_sink_port = setup.get("server").get("hls_sink_port")  # type: ignore
 server = cron.new(command=f"cd {root} && python3 -m http.server {hls_sink_port} > storage/logging/server.log")

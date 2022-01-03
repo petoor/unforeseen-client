@@ -195,10 +195,10 @@ if __name__=="__main__":
     # Load AI model.
     if use_model:
         if setup.get("device").get("type") == "NANO" or setup.get("device").get("type") == "XAVIER":
-            from unforeseen.analysis.models.people_jetson import PeopleDetect
+            from unforeseen.analysis.models.people_jetson import PeopleDetect as Model
         else:
-            from unforeseen.analysis.models.people_torchvision import PeopleDetect
-        model = PeopleDetect(url=url, token=token, bucket=bucket, org=org, db_write_speed=framerate, out_pin=out_pin)
+            from unforeseen.analysis.models.people_torchvision import PeopleDetect as Model
+        model = Model(url=url, token=token, bucket=bucket, org=org, db_write_speed=framerate, out_pin=out_pin)
     else:
         model=None
     
