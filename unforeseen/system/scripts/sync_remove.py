@@ -63,7 +63,7 @@ for f in files:
     file_time = os.path.getmtime(f)
     if file_time < delete_time:
         os.remove(f)
-        logging.info(f"Deleted file : {file} due to time")
+        logging.info(f"Deleted file : {f} due to time")
 
 ### Delete due to storage ###
 files = []
@@ -83,6 +83,6 @@ if used_space > upper_bound:
         os.remove(f)
         hdd = psutil.disk_usage(path)
         used_space = hdd.used / hdd.total
-        logging.info(f"Deleted file : {file} due to space")
+        logging.info(f"Deleted file : {f} due to space")
         if used_space < lower_bound:
             break
