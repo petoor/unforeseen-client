@@ -45,7 +45,7 @@ class PeopleDetect:
 
     def write_to_db(self, frameid, result):
         try:
-            if frameid % db_write_speed == 0: # We only write to db every second assuming fps = 30
+            if frameid % self.db_write_speed == 0: # We only write to db every second assuming fps = 30
                 point = Point("prediction").field("person", result).time(datetime.utcnow(), WritePrecision.NS)
                 self.influxdb_object.write_api.write(self.bucket, self.org, point)
         except Exception:
