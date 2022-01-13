@@ -30,9 +30,10 @@ server.every_reboot()
 # Start analysis
 script = setup.get("model").get("script")  # type: ignore
 pipeline = setup.get("model").get("pipeline")  # type: ignore
-camera = "/dev/video0"
-use_db = 1
-use_gpio = 1
-analysis = cron.new(command=f"cd {root} && python3 analysis/{script} --pipeline {pipeline} --camera {camera} --use_gpio {use_gpio} --use_db {use_db} > storage/logging/analysis.log")  # type: ignore # noqa
+camera = setup.get("model").get("camera")  # type: ignore
+use_db = setup.get("model").get("use_db")  # type: ignore
+use_gpio = setup.get("model").get("use_gpio")  # type: ignore
+use_model = setup.get("model").get("use_model")  # type: ignore
+analysis = cron.new(command=f"cd {root} && python3 {script} --pipeline {pipeline} --camera {camera} --use_gpio {use_gpio} --use_db {use_db} --use_model {use_model} > storage/logging/analysis.log")  # type: ignore # noqa
 analysis.every_reboot()
 cron.write()
