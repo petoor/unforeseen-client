@@ -151,7 +151,7 @@ class VideoAnalysisPipeline:
                     pass
                 current_time = f"{datetime.now().strftime('%Y_%m_%d_%H_%M_%S')}"
                 self.out = cv2.VideoWriter(
-                    f"{self.record_path}/{current_time}.mp4",
+                    f"{self.record_path}{current_time}.mp4",
                     cv2.VideoWriter_fourcc(*"mp4v"),
                     float(framerate),
                     (width, height),
@@ -163,7 +163,6 @@ class VideoAnalysisPipeline:
                     break
                 gstsample = self.gstsample
                 self.frameid += 1
-                # print(self.frameid, datetime.now().strftime("%Y_%m_%d_%H_%M_%S"))
                 self.gstsample = None
 
             # Passing Gst.Buffer as input tensor avoids 2 copies of it.
@@ -216,7 +215,8 @@ if __name__ == "__main__":
     name = setup.get("device").get("name")  # type: ignore
     udpsink_port = setup.get("server").get("udp_sink")  # type: ignore
     ip = setup.get("device").get("ip")  # type: ignore
-    record_path = "storage/recordings"
+    record_path = "storage/recordings/"
+    record_path = record_path + setup.get("device").get("name") + "_"  # type: ignore
     pipeline_path = args.pipeline_path
 
     with open(pipeline_path, "r") as pipeline:

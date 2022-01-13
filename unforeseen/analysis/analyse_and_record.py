@@ -108,7 +108,7 @@ class GstPipeline:
                     pass
                 current_time = f"{datetime.now().strftime('%Y_%m_%d_%H_%M_%S')}"
                 self.out = cv2.VideoWriter(
-                    f"{self.record_path}/{current_time}.mp4",
+                    f"{self.record_path}{current_time}.mp4",
                     cv2.VideoWriter_fourcc(*"mp4v"),
                     float(framerate),
                     (width, height),
@@ -195,7 +195,8 @@ if __name__=="__main__":
     name = setup.get("device").get("name")  # type: ignore
     udpsink_port = setup.get("server").get("udp_sink")  # type: ignore
     ip = setup.get("device").get("ip")  # type: ignore
-    record_path = "storage/recordings"
+    record_path = "storage/recordings/"
+    record_path = record_path + setup.get("device").get("name") + "_"  # type: ignore
     pipeline_path = args.pipeline_path
        
     # Use DB
