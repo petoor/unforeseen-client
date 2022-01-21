@@ -101,13 +101,13 @@ influx_ip = ".".join(ip.split(".")[:-1])+"._insert_last_numbers"
 # The following is an example
 # Might be a seperate script since it is so dependent on the use case
 output_protocol = "GPIO" # Http, GPIO etc...
-output_pin = 8
+output_pin = 12
 
 ### Input signal ###
 # The following is an example
 # Might be a seperate script since it is so dependent on the use case
 input_protocol = "GPIO" # Http, GPIO etc...
-input_pin = 12
+input_pin = 36
 
 ### Notification ###
 # How we notify from the AI model.
