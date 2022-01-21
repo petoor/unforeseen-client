@@ -165,7 +165,6 @@ setup.update({"device": {"name":f"{device_name}", "ip":f"{ip}", "MAC_address":f"
 setup.update({"output_signal": {"protocol": output_protocol, "out_pin": output_pin}})
 setup.update({"input_signal": {"protocol": input_protocol, "in_pin": input_pin}})
 setup.update({"notification": {"email": None}})
-breakpoint()
 setup.update({"model": {"script": None, "pipeline": None, "use_db": 1, "use_gpio": 1, "use_model": 1, "camera": list(camera_list[0].keys())[0]}})
 setup.update({"server" : {"hls_sink_port": hls_sink_port, "udp_sink": udp_sink_port}})
 setup.update({"influxdb": {"port": influxdb_port, "token": token, "org": org, "bucket": bucket, "ip": influx_ip}})
