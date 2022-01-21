@@ -1,4 +1,6 @@
 import time
+from unforeseen.config import setup_loader
+
 try:
     import Jetson.GPIO as GPIO
 except (RuntimeError, ModuleNotFoundError):
@@ -12,10 +14,10 @@ def blink_led(pin):
         GPIO.setmode(GPIO.BOARD)
         GPIO.setup(pin, GPIO.OUT, initial=GPIO.LOW)
         while True:
-            print(f"Sent High to {pin}")
+            print(f"Sent High to pin {pin}")
             GPIO.output(pin, GPIO.HIGH)
             time.sleep(1)
-            print(f"Sent Low to {pin}")
+            print(f"Sent Low to pin {pin}")
             GPIO.output(pin, GPIO.LOW)
             time.sleep(1)
     finally:
@@ -23,4 +25,6 @@ def blink_led(pin):
         GPIO.cleanup()
 
 if __name__=="__main__":
-    blink_led(12)
+    setup = setup_loader()
+    out_pin = setup.get("output_signal").get("out_pin")
+    blink_led(out_pin)

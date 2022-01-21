@@ -1,4 +1,5 @@
-import time
+from unforeseen.config import setup_loader
+
 try:
     import Jetson.GPIO as GPIO
 except (RuntimeError, ModuleNotFoundError):
@@ -15,6 +16,7 @@ def button_press(in_pin, out_pin):
         while True: # Run forever
             if GPIO.input(in_pin) == GPIO.HIGH:
                 print("Button was pushed!")
+                print(f"Sending High to pin {out_pin}")
                 GPIO.output(out_pin, GPIO.HIGH)
             else:
                 GPIO.output(out_pin, GPIO.LOW)
@@ -23,4 +25,8 @@ def button_press(in_pin, out_pin):
         GPIO.cleanup()
 
 if __name__=="__main__":
-    button_press(10, 12)
+    setup = setup_loader()
+    out_pin = setup.get("output_signal").get("out_pin")
+    in_pin = setup.get("input_signal").get("in_pin")
+    
+    button_press(in_pin=in_pin, out_put=out_pin)
