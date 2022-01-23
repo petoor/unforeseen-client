@@ -22,7 +22,7 @@ server_path = nas.get("path")  # type: ignore
 device_name = setup.get("device").get("name")  # type: ignore
 
 sync = cron.new(
-    command=f"cd {root} && python sshpass -p {password} {protocol} -a storage/ {server_user}@{server_ip}:{server_path}/data/{device_name} >> {root}/storage/logging/sync_files.log"
+    command=f"cd {root} && sshpass -p {password} {protocol} -a storage/ {server_user}@{server_ip}:{server_path}/data/{device_name} >> {root}/storage/logging/sync_files.log"
 )
 sync.minute.on(0)
 
