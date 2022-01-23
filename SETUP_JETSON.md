@@ -93,6 +93,7 @@ The RTSP Server should now be installed and ready for use. See [record and displ
 ### 7) *(Optional)* SSH pass
 To run file sync as daemon sshpass is handy. Used to script the password handshake with the server.
 `sudo apt-get install -y sshpass`
+Remember the target folder must exist on the server.
 
 ### 8) Reboot and enjoy.
 
