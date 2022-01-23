@@ -90,7 +90,11 @@ https://gstreamer.freedesktop.org/src/gst-rtsp-server/
 
 The RTSP Server should now be installed and ready for use. See [record and display rtsp](https://github.com/petoor/unforeseen-client/blob/main/unforeseen/analysis/pipelines/record-and-display-rtsp-raw.txt) for an example usage.
 
-### 7) Reboot and enjoy.
+### 7) *(Optional)* SSH pass
+To run file sync as daemon sshpass is handy. Used to script the password handshake with the server.
+`sudo apt-get install -y sshpass`
+
+### 8) Reboot and enjoy.
 
 `sudo reboot`
 
