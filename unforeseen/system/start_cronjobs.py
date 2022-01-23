@@ -2,6 +2,7 @@ import os
 import sys
 
 from crontab import CronTab
+from numpy import delete
 
 from unforeseen.config import setup_loader
 
@@ -11,11 +12,25 @@ root = setup.get("device").get("root")  # type: ignore
 cron = CronTab(user=True)
 cron.remove_all()
 
-# Sync and remove
-sync_and_remove = cron.new(
-    command=f"cd {root} && python -OO system/scripts/sync_remove.py >> {root}/storage/logging/sync_and_remove.log"
+# Sync files
+nas = setup.get("storage").get("NAS")
+password = nas.get("password")  # type: ignore
+server_user = nas.get("user")  # type: ignore
+server_ip = nas.get("ip")  # type: ignore
+protocol = nas.get("protocol")  # type: ignore
+server_path = nas.get("path")  # type: ignore
+device_name = setup.get("device").get("name")  # type: ignore
+
+sync = cron.new(
+    command=f"cd {root} && python sshpass -p {password} {protocol} -a storage/ {server_user}@{server_ip}:{server_path}/data/{device_name} >> {root}/storage/logging/sync_files.log"
 )
-sync_and_remove.minute.on(0)
+sync.minute.on(0)
+
+# Delete files
+delete_files = cron.new(
+    command=f"cd {root} && python -OO system/scripts/delete_files.py >> {root}/storage/logging/delete_files.log"
+)
+delete_files.minute.on(0)
 
 # Backup settings
 backup = cron.new(command=f"cd {root} && python -OO system/scripts/backup_settings.py >> {root}/storage/logging/backup.log")

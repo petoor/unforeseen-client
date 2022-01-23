@@ -1,6 +1,3 @@
-# The script will sync files before removing them, if sync is not needed. The files are simply deleted.
-# TODO: Sync
-
 import sys, os
 import glob
 import time
@@ -29,18 +26,6 @@ def date_to_seconds(time):
     seconds = int(time[0])*_intervals_to_seconds(time[1])
     return seconds
 
-#def sync_files(file, remote_url,  remote_folder, username="pi", password="raspberry", port=22):
-#    try:
-#        ssh = SSHClient()
-#        ssh.load_system_host_keys()
-#        ssh.set_missing_host_key_policy(AutoAddPolicy())
-#        ssh.connect(remote_url, port=port,username=username,password=password, look_for_keys=False)
-#        scp = SCPClient(ssh.get_transport())
-#        scp.put(files=file, remote_path=remote_folder)
-#        scp.close()
-#    except Exception:
-#        logging.critical(f"Could not sync files to remove {remote_url}")
-
 setup = setup_loader()
 
 local_storage = setup.get("storage").get("local_storage")
@@ -49,8 +34,6 @@ folders_to_delete = local_storage.get("folders_to_delete")
 delete_time = time.time() - date_to_seconds(local_storage.get("delete_time"))
 delete_space = local_storage.get("delete_space")
 
-#sync = list(setup.get("storage").keys())
-#sync.remove("local_storage")
 ### Delete old files due to time ###
 files = []
 for folder in folders_to_delete:

@@ -170,8 +170,8 @@ setup.update({"server" : {"hls_sink_port": hls_sink_port, "udp_sink": udp_sink_p
 setup.update({"influxdb": {"port": influxdb_port, "token": token, "org": org, "bucket": bucket, "ip": influx_ip}})
 setup.update({"storage": 
              {"local_storage": {"path": local_storage_path, "folders_to_delete": folders_to_delete, "delete_time": delete_time, "delete_space": delete_space}, 
-             "cloud": {"use_sync":False, "protocol": "scp", "url": None, "user": None, "password": None, "path": None},
-             "NAS":{"use_sync":False, "protocol": "scp", "url": None, "port": 22, "user": None, "password": None, "path": None}}
+             "cloud": {"protocol": "rsync", "ip": None, "user": None, "password": None, "path": None},
+             "NAS":{"protocol": "rsync", "ip": None, "user": None, "password": None, "path": None}}
              })
 
 with open('SETUP.yml', 'w') as f:
