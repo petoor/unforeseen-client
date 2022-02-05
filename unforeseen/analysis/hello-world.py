@@ -30,8 +30,7 @@ class GstPipeline:
         self.gstfifo = []
         self.frameid = 0
         self.condition = threading.Condition()
-        if model is not None:
-            self.model = model
+        self.model = model
         self.player = Gst.parse_launch(pipeline)
 
         # Fetch different pads from pipeline for manipulation
