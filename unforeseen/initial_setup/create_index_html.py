@@ -23,7 +23,7 @@ html = f'''<!DOCTYPE html>
     <source src="http://{hls_sink_port}/storage/streaming/playlist.m3u8" type="application/x-mpegURL">
   </video-js>
   <script src="https://unpkg.com/video.js/dist/video.js"></script>
-  <script src="https://unpkg.com/@videojs/http-streaming/dist/videojs-http-streaming.js"></script>
+  <script src="https://unpkg.com/@videojs/http-streaming@3.0.0/dist/videojs-http-streaming.js"></script>
   <script>
     var player = videojs('video');
   </script>
